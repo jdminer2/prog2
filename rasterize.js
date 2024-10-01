@@ -202,10 +202,7 @@ function spacebarAction() {
     vertexBuffer = gl.createBuffer(); // init empty vertex coord buffer
     gl.bindBuffer(gl.ARRAY_BUFFER,vertexBuffer); // activate that buffer
     gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(coordArray),gl.STATIC_DRAW); // coords to that buffer
-    gl.useProgram(shaderProgram); // activate shader program (frag and vert)
-    vertexPositionAttrib = // get pointer to vertex shader input
-        gl.getAttribLocation(shaderProgram, "vertexPosition"); 
-    gl.enableVertexAttribArray(vertexPositionAttrib); // input to shader from array
+    setupShaders(); // setup the webGL shaders
     gl.bindBuffer(gl.ARRAY_BUFFER,vertexBuffer); // activate
     gl.vertexAttribPointer(vertexPositionAttrib,3,gl.FLOAT,false,0,0); // feed
     gl.drawElements(gl.TRIANGLES,triBufferSize,gl.UNSIGNED_SHORT,0); // render
