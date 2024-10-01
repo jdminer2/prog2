@@ -196,6 +196,13 @@ function renderTriangles() {
     gl.drawElements(gl.TRIANGLES,triBufferSize,gl.UNSIGNED_SHORT,0); // render
 } // end render triangles
 
+function addSpacebarAction() {
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        console.log('Space pressed')
+      }
+    });
+}
 
 /* MAIN -- HERE is where execution begins after window load */
 
@@ -205,5 +212,7 @@ function main() {
   loadTriangles(); // load in the triangles from tri file
   setupShaders(); // setup the webGL shaders
   renderTriangles(); // draw the triangles using webGL
+
+  addSpacebarAction(); // spacebar listener and changes made
   
 } // end main
