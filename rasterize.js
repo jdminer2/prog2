@@ -196,14 +196,21 @@ function renderTriangles() {
     gl.drawElements(gl.TRIANGLES,triBufferSize,gl.UNSIGNED_SHORT,0); // render
 } // end render triangles
 
-var spaceDone = false;
-function addSpacebarAction() {
-    document.addEventListener('keydown', (e) => {
-        if (e.code === 'Space' && !spaceDone) {
-            spaceDone = true;
-            console.log('Space pressed');
-        }
-    });
+function spacebarAction() {
+    // send the vertex coords to webGL
+    const coordArray = [];
+    vertexBuffer = gl.createBuffer(); // init empty vertex coord buffer
+    gl.bindBuffer(gl.ARRAY_BUFFER,vertexBuffer); // activate that buffer
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(coordArray),gl.STATIC_DRAW); // coords to that buffer
+    gl.useProgram(shaderProgram); // activate shader program (frag and vert)
+    vertexPositionAttrib = // get pointer to vertex shader input
+        gl.getAttribLocation(shaderProgram, "vertexPosition"); 
+    gl.enableVertexAttribArray(vertexPositionAttrib); // input to shader from array
+    gl.bindBuffer(gl.ARRAY_BUFFER,vertexBuffer); // activate
+    gl.vertexAttribPointer(vertexPositionAttrib,3,gl.FLOAT,false,0,0); // feed
+    gl.drawElements(gl.TRIANGLES,triBufferSize,gl.UNSIGNED_SHORT,0); // render
+    
+    console.log('Space pressed');
 }
 
 /* MAIN -- HERE is where execution begins after window load */
@@ -214,7 +221,14 @@ function main() {
   loadTriangles(); // load in the triangles from tri file
   setupShaders(); // setup the webGL shaders
   renderTriangles(); // draw the triangles using webGL
-
-  addSpacebarAction(); // spacebar listener and changes made
+    
+    // spacebar listener
+    var spaceDone = false;
+    document.addEventListener('keydown', (e) => {
+        if (!spaceDone && e.code === 'Space') {
+            spaceDone = true;
+            spacebarAction();
+        }
+    });
   
 } // end main
