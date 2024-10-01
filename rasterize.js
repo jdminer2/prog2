@@ -79,10 +79,10 @@ function loadTriangles() {
         var coordArray = []; // 1D array of vertex coords for WebGL
         var colorArray = []; // 1D array of color coords for WebGL
         var idxArray = []; // 1D array of indices for WebGL
-        var indexOffset = 0;
         
         for (var whichSet=0; whichSet<inputTriangles.length; whichSet++) {
             
+            var indexOffset = coordArray.length;
             // set up the vertex coord array
             for (whichSetVert=0; whichSetVert<inputTriangles[whichSet].vertices.length; whichSetVert++){
                 coordArray = coordArray.concat(inputTriangles[whichSet].vertices[whichSetVert]);
@@ -95,10 +95,8 @@ function loadTriangles() {
                               currentTriangle[2] + indexOffset
                              );
             }
-            indexOffset += inputTriangles[whichSet].vertices.length;
-            triBufferSize += inputTriangles[whichSet].triangles.length;
         } // end for each triangle set 
-        triBufferSize *= 3;
+        triBufferSize = idxArray.length;
         
         // send the vertex coords to webGL
         vertexBuffer = gl.createBuffer(); // init empty vertex coord buffer
@@ -198,14 +196,105 @@ function renderTriangles() {
 
 function spacebarAction() {
     // send the vertex coords to webGL
-    const coordArray = [];
-    vertexBuffer = gl.createBuffer(); // init empty vertex coord buffer
+    const coordArray = [
+        // lowered hat
+        0.15,0.35,0.75,
+        0.25,0.65,0.75,
+        0.35,0.35,0.75,
+
+        // original head
+        0.15,0.15,0.75,
+        0.15,0.35,0.75,
+        0.35,0.35,0.75,
+        0.35,0.15,0.75,
+
+        // pupils
+        0.18,0.26,0.73,
+        0.18,0.30,0.73,
+        0.22,0.30,0.73,
+        0.22,0.26,0.73,
+        0.28,0.26,0.73,
+        0.28,0.30,0.73,
+        0.32,0.30,0.73,
+        0.32,0.26,0.73,
+
+        // whites
+        0.16,0.24,0.74,
+        0.16,0.32,0.74,
+        0.24,0.32,0.74,
+        0.24,0.24,0.74,
+        0.26,0.24,0.74,
+        0.26,0.32,0.74,
+        0.34,0.32,0.74,
+        0.34,0.24,0.74,
+        
+        // mouth
+        0.16,0.16,0.74,
+        0.16,0.23,0.74,
+        0.34,0.23,0.74,
+        0.34,0.16,0.74,
+    ];
+    const colorArray = [
+        0.6,0.4,0.4,
+        0.6,0.4,0.4,
+        0.6,0.4,0.4,
+        
+        0.6,0.6,0.4,
+        0.6,0.6,0.4,
+        0.6,0.6,0.4,
+        0.6,0.6,0.4,
+        
+        0.0,0.0,0.0,
+        0.0,0.0,0.0,
+        0.0,0.0,0.0,
+        0.0,0.0,0.0,
+        0.0,0.0,0.0,
+        0.0,0.0,0.0,
+        0.0,0.0,0.0,
+        0.0,0.0,0.0,
+        
+        1.0,1.0,1.0,
+        1.0,1.0,1.0,
+        1.0,1.0,1.0,
+        1.0,1.0,1.0,
+        1.0,1.0,1.0,
+        1.0,1.0,1.0,
+        1.0,1.0,1.0,
+        1.0,1.0,1.0,
+        
+        0.0,0.0,0.0,
+        0.0,0.0,0.0,
+        0.0,0.0,0.0,
+        0.0,0.0,0.0,
+    ];
+    const idxArray = [
+        0,1,2,
+        
+        3,4,5,
+        5,6,3,
+        
+        7,8,9,
+        9,10,7,
+        11,12,13,
+        13,14,11,
+        
+        15,16,17,
+        17,18,15,
+        19,20,21,
+        21,22,19,
+        
+        23,24,25,
+        25,26,23,
+    ];
+    triBufferSize = idxArray.length;
+    
     gl.bindBuffer(gl.ARRAY_BUFFER,vertexBuffer); // activate that buffer
     gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(coordArray),gl.STATIC_DRAW); // coords to that buffer
-    setupShaders(); // setup the webGL shaders
-    gl.bindBuffer(gl.ARRAY_BUFFER,vertexBuffer); // activate
-    gl.vertexAttribPointer(vertexPositionAttrib,3,gl.FLOAT,false,0,0); // feed
-    gl.drawElements(gl.TRIANGLES,triBufferSize,gl.UNSIGNED_SHORT,0); // render
+    gl.bindBuffer(gl.ARRAY_BUFFER,colorBuffer); // activate that buffer
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(colorArray),gl.STATIC_DRAW); // coords to that buffer
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,triangleBuffer); // activate that buffer
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(idxArray),gl.STATIC_DRAW); // indices to that buffer
+    renderTriangles();
     
     console.log('Space pressed');
 }
