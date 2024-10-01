@@ -196,11 +196,13 @@ function renderTriangles() {
     gl.drawElements(gl.TRIANGLES,triBufferSize,gl.UNSIGNED_SHORT,0); // render
 } // end render triangles
 
+var spaceDone = false;
 function addSpacebarAction() {
     document.addEventListener('keydown', (e) => {
-      if (e.code === 'Space') {
-        console.log('Space pressed')
-      }
+        if (e.code === 'Space' && !spaceDone) {
+            spaceDone = true;
+            console.log('Space pressed');
+        }
     });
 }
 
