@@ -82,7 +82,7 @@ function loadTriangles() {
         
         for (var whichSet=0; whichSet<inputTriangles.length; whichSet++) {
             
-            var indexOffset = coordArray.length;
+            var indexOffset = coordArray.length / 3;
             // set up the vertex coord array
             for (whichSetVert=0; whichSetVert<inputTriangles[whichSet].vertices.length; whichSetVert++){
                 coordArray = coordArray.concat(inputTriangles[whichSet].vertices[whichSetVert]);
