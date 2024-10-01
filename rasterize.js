@@ -87,9 +87,9 @@ function loadTriangles() {
             }
             for (whichSetTri=0; whichSetTri<inputTriangles[whichSet].triangles.length; whichSetTri++){
                 var currentTriangle = inputTriangles[whichSet].triangles[whichSetTri];
-                idxArray.push(currentTriangles[0] + indexOffset,
-                              currentTriangles[1] + indexOffset,
-                              currentTriangles[2] + indexOffset
+                idxArray.push(currentTriangle[0] + indexOffset,
+                              currentTriangle[1] + indexOffset,
+                              currentTriangle[2] + indexOffset
                              );
             }
             indexOffset += inputTriangles[whichSet].vertices.length;
